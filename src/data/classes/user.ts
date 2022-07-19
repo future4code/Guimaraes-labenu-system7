@@ -1,21 +1,10 @@
-export interface USER_INTERFACE {
-  readonly id: string;
-  readonly name: string;
-  readonly email: string;
-  readonly birth_date: string;
-
-  getId(): string;
-  getName(): string;
-  getEmail(): string;
-  getBirthDate(): string;
-}
-
-export class USER implements USER_INTERFACE {
+export class USER {
   constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly email: string,
-    public readonly birth_date: string
+    protected id: string,
+    protected name: string,
+    protected email: string,
+    protected birth_date: string,
+    protected class_id: string
   ) {}
   public getId(): string {
     return this.id;
@@ -28,5 +17,8 @@ export class USER implements USER_INTERFACE {
   }
   public getBirthDate(): string {
     return this.birth_date;
+  }
+  public getClassId():string{
+    return this.class_id
   }
 }

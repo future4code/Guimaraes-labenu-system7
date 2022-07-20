@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsc && node ./build/index.js",
     "dev": "clear && tsnd --transpile-only --ignore-watch node_modules ./src/index.ts",
+    "students": "clear && tsnd --transpile-only --ignore-watch node_modules ./src/data/classes/students.ts",
     "build": "tsc"
   },
   "repository": {

@@ -2,7 +2,10 @@ export class CLASS {
   constructor(
     protected id: string,
     protected name: string,
+    protected teachers: string[],
+    protected students: string[],
     protected module: number
+   ,
   ) {}
   getId(): string {
     return this.id;
@@ -12,5 +15,11 @@ export class CLASS {
   }
   getModule(): number {
     return this.module;
+  }
+  getTeachers():string[]{
+    return this.teachers
+  }
+  getStudents():string[]{
+    return this.students
   }
 }

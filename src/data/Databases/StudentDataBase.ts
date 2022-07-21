@@ -32,12 +32,42 @@ export class StudentDataBase extends BaseDatabase {
     }
   };
 
-  public createHobbies = async (hobby:string[], student:Student):Promise<void>=>{
+  public createHobbies = async (hobbies:string[], student:Student):Promise<void>=>{
     try {
-      hobby.forEach(async (item:any)=>{
+
+
+      hobbies.forEach(async (hobby:string)=>{
+
+        const hobbies = await BaseDatabase.connection("HOBBY").select("id","name").where("name", hobby);
+        if(hobbies.length){
+          
+          for (const element of hobbies) {
+            if(element.name === hobby){
+              let newStudentHobby = {
+                id: generateId(),
+                student_id: student.getId(),
+                hobby_id: element.id
+              }
+              await BaseDatabase.connection("STUDENTS_HOBBY").insert(newStudentHobby)
+            }else{
+              let newHobby:any = {
+                id: generateId(),
+                name: hobby
+              }
+              let newStudentHobby = {
+                id: generateId(),
+                student_id: student.getId(),
+                hobby_id: newHobby.id
+              }
+              await BaseDatabase.connection("HOBBY").insert(newHobby)
+              await BaseDatabase.connection("STUDENTS_HOBBY").insert(newStudentHobby)
+
+            }
+          }
+        }
         let newHobby:any = {
           id: generateId(),
-          name: item
+          name: hobby
         }
         let newStudentHobby = {
           id: generateId(),
@@ -46,7 +76,6 @@ export class StudentDataBase extends BaseDatabase {
         }
         await BaseDatabase.connection("HOBBY").insert(newHobby)
         await BaseDatabase.connection("STUDENTS_HOBBY").insert(newStudentHobby)
-
       })
 
     

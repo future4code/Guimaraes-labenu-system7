@@ -16,6 +16,7 @@ export class MailDataBase {
     },
     tls: { ciphers: "SSLv3" },
   });
+  
   public sendEmail = async (email: string, name: string): Promise<void> => {
     try {
       await MailDataBase.mailTransporter.sendMail({

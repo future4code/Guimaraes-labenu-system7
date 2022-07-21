@@ -9,6 +9,8 @@ import { MailDataBase } from "../data/classes/mailTransporter";
 export const postStudents = async (req: Request, res: Response) => {
   try {
     const { name, email, birthDate, classId, hobbies }: any = req.body;
+    const newDateSplit = new Date(birthDate).toISOString().split("T");
+    const newBirthDate = newDateSplit[0];
 
     if (!name || !email || !birthDate || !classId || !hobbies) {
       throw new CustomError(
@@ -20,7 +22,7 @@ export const postStudents = async (req: Request, res: Response) => {
       generateId(),
       name,
       email,
-      birthDate,
+      newBirthDate,
       classId,
       hobbies
     );
@@ -30,12 +32,14 @@ export const postStudents = async (req: Request, res: Response) => {
 
     // AQUI ENVIO ESSA NOVA INSTÂNCIA PRA TABELA DE USUÁRIOS
 
-    await studentDB.createStudent(newStudent);
+     await studentDB.createStudent(newStudent);
 
-    // AQUI ENVIO ESSE O ARRAY DE HOBBIES PRA FUNÇÃO QUE IRÁ FAZER UM LOOP E INSERIR NA TABELA DE HOBBYS INDIVIDUALMENTE E jÁ CRIO UM NOVA RELAÇÃO ENTRE O ESTUDANTE E O HOBBY USANDO OS DADOS QUE ACABARAM DE SER CRIADOS
+    // AQUI ENVIO O ARRAY DE HOBBIES RECEBIDOS NO BODY PRA FUNÇÃO QUE IRÁ FAZER UM LOOP E VERIFICAR SE ALGUM DESSES HOBBIES JÁ EXISTEM NA TABELA DE HOBBY, SE ALGUM HOBBY EXISTIR BUSCO O ID DELE E JÁ FAZ A INSERÇÃO NA TABELHA DE RELAÇÕES DE HOBBYS E ESTUDANTES, SE NÃO EXISTIR ELA INSERE NA TABELA DE HOBBYS INDIVIDUALMENTE E jÁ CRIA UM NOVA RELAÇÃO ENTRE O ESTUDANTE E O HOBBY USANDO OS DADOS QUE ACABARAM DE SER CRIADOS
     await studentDB.createHobbies(hobbies, newStudent);
+
     const sendEmail = new MailDataBase();
     sendEmail.sendEmail(newStudent.getEmail(), newStudent.getName());
+
   } catch (error: any) {
     res.status(error.statusCode).send(error.message);
   } finally {

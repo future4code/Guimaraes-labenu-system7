@@ -2,10 +2,9 @@ export class CLASS {
   constructor(
     protected id: string,
     protected name: string,
-    protected teachers: string[],
-    protected students: string[],
-    protected module: number
-   ,
+    protected module: number = 0,
+    protected teachers?: string[],
+    protected students?: string[],
   ) {}
   getId(): string {
     return this.id;
@@ -16,10 +15,13 @@ export class CLASS {
   getModule(): number {
     return this.module;
   }
-  getTeachers():string[]{
+  getTeachers():string[] | undefined{
     return this.teachers
   }
-  getStudents():string[]{
+  getStudents():string[] | undefined{
     return this.students
+  }
+  setModule(newModule:number):void{
+    this.module = newModule
   }
 }

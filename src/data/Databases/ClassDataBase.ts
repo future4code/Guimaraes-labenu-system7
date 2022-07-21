@@ -4,9 +4,9 @@ import { BaseDatabase } from "./BaseDatabase";
 
 export class ClassDataBase extends BaseDatabase {
   //AQUI NAO ACEITA O "Class" com letra minuscula, nao sei porque.... "
-  public createClass = async (Class: CLASS): Promise<void> => {
+  public createClass = async (newObject: {}): Promise<void> => {
     try {
-      await BaseDatabase.connection("CLASS").insert(Class);
+      await BaseDatabase.connection("CLASS").insert(newObject);
     } catch (error: any) {
       throw new CustomError(error.sqlMessage || error.message, 500);
     }

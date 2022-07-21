@@ -7,18 +7,30 @@ import { messageStatus } from "../data/error/statusCodes";
 
 export const postClass = async (req: Request, res: Response) => {
   try {
-    const { name, module }: any = req.body;
+    let { name, module }: any = req.body;
     if (!name) {
       throw new CustomError("MISSING PARAMETERS NAME", 422);
     }
-    if (!module) {
-      throw new CustomError("MISSING PARAMETERS MODULE", 422);
+
+    if(!module){
+      module = 0
     }
-    const newClass: CLASS = new CLASS(generateId(), name, module);
+
+    if(module > 6 ){
+      throw new CustomError("NOT IMPLEMENTED, MODULE MUST BE A NUMBER BETWEEN 1 AND 6" , 404)
+    }
+    
+    const newClass = new CLASS(generateId(), name, module);
+
+    const newObjectClass: { id: string; name: string; module: number } = {
+      id: newClass.getId(),
+      name: newClass.getName(),
+      module: newClass.getModule(),
+    };
 
     const classDB = new ClassDataBase();
 
-    await classDB.createClass(newClass);
+    await classDB.createClass(newObjectClass);
 
     res.status(200).send(messageStatus.SUCCESS.message);
   } catch (error: any) {

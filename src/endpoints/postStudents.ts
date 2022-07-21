@@ -4,6 +4,7 @@ import { v4 as generateId } from "uuid";
 import { CustomError } from "../data/error/customError";
 import { messageStatus } from "../data/error/statusCodes";
 import { StudentDataBase } from "../data/Databases/StudentDataBase";
+import { MailDataBase } from "../data/classes/mailTransporter";
 
 export const postStudents = async (req: Request, res: Response) => {
   try {
@@ -33,6 +34,8 @@ export const postStudents = async (req: Request, res: Response) => {
 
     // AQUI ENVIO ESSE O ARRAY DE HOBBIES PRA FUNÇÃO QUE IRÁ FAZER UM LOOP E INSERIR NA TABELA DE HOBBYS INDIVIDUALMENTE E jÁ CRIO UM NOVA RELAÇÃO ENTRE O ESTUDANTE E O HOBBY USANDO OS DADOS QUE ACABARAM DE SER CRIADOS
     await studentDB.createHobbies(hobbies, newStudent);
+    const sendEmail = new MailDataBase();
+    sendEmail.sendEmail(newStudent.getEmail(), newStudent.getName());
   } catch (error: any) {
     res.status(error.statusCode).send(error.message);
   } finally {

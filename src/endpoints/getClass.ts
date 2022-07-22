@@ -1,3 +1,4 @@
+import { StudentDataBase } from './../data/Databases/StudentDataBase';
 import { CLASS } from "../data/classes/class";
 import { Request, Response } from "express";
 import { CustomError } from "../data/error/customError";
@@ -15,6 +16,11 @@ export const getClass = async (req: Request, res: Response) => {
     if (!result) {
       throw new CustomError("NOT FOUND CLASS", 404);
     }
+
+    const novaInstancia = new StudentDataBase()
+    const studentList = novaInstancia.getStudentsList("015")
+    const NovaNovaXCLasse =  new CLASS()
+    //novo metodo teacherdatabase copia getStudentsList 
 
     res.status(200).send(result);
 } catch (error: any) {

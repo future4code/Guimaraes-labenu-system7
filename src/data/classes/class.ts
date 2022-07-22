@@ -3,8 +3,8 @@ export class CLASS {
     protected id: string,
     protected name: string,
     protected module: number = 0,
-    protected teachers?: string[],
-    protected students?: string[],
+    protected teachers?: [],
+    protected students?: [],
   ) {}
   getId(): string {
     return this.id;
@@ -15,10 +15,10 @@ export class CLASS {
   getModule(): number {
     return this.module;
   }
-  getTeachers():string[] | undefined{
+  getTeachers():[] | undefined{
     return this.teachers
   }
-  getStudents():string[] | undefined{
+  getStudents():[] | undefined{
     return this.students
   }
   setModule(newModule:number):void{

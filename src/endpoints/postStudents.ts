@@ -39,10 +39,10 @@ export const postStudents = async (req: Request, res: Response) => {
 
     const sendEmail = new MailDataBase();
     sendEmail.sendEmail(newStudent.getEmail(), newStudent.getName());
+    
+    res.status(200).send(messageStatus.SUCCESS.message);
 
   } catch (error: any) {
     res.status(error.statusCode).send(error.message);
-  } finally {
-    res.status(200).send(messageStatus.SUCCESS.message);
   }
 };

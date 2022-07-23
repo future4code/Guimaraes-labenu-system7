@@ -13,8 +13,10 @@ export class ClassDataBase extends BaseDatabase {
 
   public getAllClass = async (): Promise<CLASS[]> => {
     try {
-      let students;
-      let newArrayData: any = [];
+      let teachers:any = []
+      let students:any = []
+      let newArrayData:any = [];
+      
       const result: any = await BaseDatabase.connection
         .select("c.id as classId", "c.name as class_Name", "c.module")
         .from("CLASS as c")
@@ -26,9 +28,17 @@ export class ClassDataBase extends BaseDatabase {
             "s.name",
             "s.email",
             "s.birth_date as birthDate",
-            "s.class_id"
           )
           .where("s.class_id", element.classId);
+          
+        teachers = await BaseDatabase.connection("TEACHERS as t")
+        .select(
+          "t.id as teacherId",
+          "t.name as teacherName",
+          "t.email as teacherEmail",
+          "t.birth_date as teacherBirthDate",
+        )
+        .where("t.class_id", element.classId);
 
         for (const student of students) {
           let newDateSplit = new Date(student.birthDate)
@@ -38,12 +48,23 @@ export class ClassDataBase extends BaseDatabase {
           student.birthDate = newBirthDate;
         }
 
+        for (const teacher of teachers) {
+          let newDateSplit = new Date(teacher.teacherBirthDate)
+            .toISOString()
+            .split("T");
+          let newBirthDateTeacher = newDateSplit[0].split("-").reverse().join("/");
+          teacher.teacherBirthDate = newBirthDateTeacher;
+        }
+
+        let Class: CLASS = new CLASS(element.classId,
+          element.class_Name,
+          element.module,
+          teachers,
+          students,)
+
         newArrayData.push({
-          id: element.classId,
-          name: element.class_Name,
-          module: element.module,
-          teachers: element.teachers,
-          students,
+          Class
+
         });
       }
       return newArrayData;

@@ -108,4 +108,12 @@ export class StudentDataBase extends BaseDatabase {
       throw new CustomError(error.sqlMessage || error.message, 500);
     }
   };
+  public getStudentsList  = async(classId:string):Promise<any[]> =>{
+    try {
+      const result:any = await BaseDatabase.connection("STUDENTS").select("*").where("class_id", classId)
+return result
+    } catch (error:any) {
+      throw new CustomError(error.sqlMessage || error.message, 500);  
+    }
+  }
 }

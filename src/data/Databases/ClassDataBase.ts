@@ -22,4 +22,6 @@ export class ClassDataBase extends BaseDatabase {
       throw new CustomError(error.sqlMessage || error.message, 500);
     }
   };
+
+
 }

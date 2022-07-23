@@ -30,7 +30,7 @@ export const postStudents = async (req: Request, res: Response) => {
 
     const studentDB = new StudentDataBase();
 
-    // AQUI ENVIO ESSA NOVA INSTÂNCIA PRA TABELA DE USUÁRIOS
+    // AQUI ENVIO ESSA NOVA INSTÂNCIA PRA TABELA DE ESTUDANTES
 
      await studentDB.createStudent(newStudent);
 

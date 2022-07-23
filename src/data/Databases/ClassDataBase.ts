@@ -1,6 +1,8 @@
+import { StudentDataBase } from "./StudentDataBase";
 import { CLASS } from "../classes/class";
 import { CustomError } from "../error/customError";
 import { BaseDatabase } from "./BaseDatabase";
+import { TeacherDataBase } from "./TeacherDataBase";
 
 export class ClassDataBase extends BaseDatabase {
   public createClass = async (newObject: {}): Promise<void> => {
@@ -13,32 +15,21 @@ export class ClassDataBase extends BaseDatabase {
 
   public getAllClass = async (): Promise<CLASS[]> => {
     try {
-      let teachers:any = []
-      let students:any = []
-      let newArrayData:any = [];
-      
+      let teachers: any = [];
+      let students: any = [];
+      let newArrayData: any = [];
+
       const result: any = await BaseDatabase.connection
         .select("c.id as classId", "c.name as class_Name", "c.module")
         .from("CLASS as c")
         .orderBy("name");
       for (let element of result) {
-        students = await BaseDatabase.connection("STUDENTS as s")
-          .select(
-            "s.id as studentId",
-            "s.name",
-            "s.email",
-            "s.birth_date as birthDate",
-          )
-          .where("s.class_id", element.classId);
-          
-        teachers = await BaseDatabase.connection("TEACHERS as t")
-        .select(
-          "t.id as teacherId",
-          "t.name as teacherName",
-          "t.email as teacherEmail",
-          "t.birth_date as teacherBirthDate",
-        )
-        .where("t.class_id", element.classId);
+        const StudentDB = new StudentDataBase();
+
+        students = await StudentDB.getStudentsList(element.classId);
+
+        const TeachersDB = new TeacherDataBase();
+        teachers = await TeachersDB.getTeachersList(element.classId);
 
         for (const student of students) {
           let newDateSplit = new Date(student.birthDate)
@@ -52,19 +43,23 @@ export class ClassDataBase extends BaseDatabase {
           let newDateSplit = new Date(teacher.teacherBirthDate)
             .toISOString()
             .split("T");
-          let newBirthDateTeacher = newDateSplit[0].split("-").reverse().join("/");
-          teacher.teacherBirthDate = newBirthDateTeacher;
+          let newBirthDateTeacher = newDateSplit[0]
+            .split("-")
+            .reverse()
+            .join("/");
+          teacher.birth_date = newBirthDateTeacher;
         }
 
-        let Class: CLASS = new CLASS(element.classId,
+        let Class: CLASS = new CLASS(
+          element.classId,
           element.class_Name,
           element.module,
           teachers,
-          students,)
+          students
+        );
 
         newArrayData.push({
-          Class
-
+          Class,
         });
       }
       return newArrayData;

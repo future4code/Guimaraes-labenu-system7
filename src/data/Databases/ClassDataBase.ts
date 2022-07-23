@@ -3,7 +3,7 @@ import { CustomError } from "../error/customError";
 import { BaseDatabase } from "./BaseDatabase";
 
 export class ClassDataBase extends BaseDatabase {
-  //AQUI NAO ACEITA O "Class" com letra minuscula, nao sei porque.... "
+
   public createClass = async (newObject: {}): Promise<void> => {
     try {
       await BaseDatabase.connection("CLASS").insert(newObject);

@@ -17,17 +17,30 @@ export class TeacherDataBase extends BaseDatabase {
       throw new CustomError(error.sqlMessage || error.message, 500);
     }
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
   public createSpecialties = async (
     specialties: string[],
     teacher: Teacher
   ): Promise<void> => {
+<<<<<<< HEAD
+=======
+    let newSpecialty: any = {};
+    let newTeacherSpecialty: any = {};
+
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
     try {
       specialties.forEach(async (specialty: string) => {
         const hobbies = await BaseDatabase.connection("SPECIALTY")
           .select("id", "name")
           .where("name", specialty);
+<<<<<<< HEAD
         if (hobbies.length) {
+=======
+        if (specialties.length) {
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
           for (const element of hobbies) {
             if (element.name === specialty) {
               let newTeacherSpecialty = {
@@ -40,6 +53,7 @@ export class TeacherDataBase extends BaseDatabase {
               );
               return;
             }
+<<<<<<< HEAD
             let newSpecialty: any = {
               id: generateId(),
               name: specialty,
@@ -48,6 +62,16 @@ export class TeacherDataBase extends BaseDatabase {
               id: generateId(),
               teacher_id: teacher.getId(),
               specialty_id: newSpecialty.id,
+=======
+            newSpecialty = {
+              id: generateId(),
+              name: specialty,
+            };
+            newTeacherSpecialty = {
+              id: generateId(),
+              student_id: teacher.getId(),
+              hobby_id: newSpecialty.id,
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
             };
             await BaseDatabase.connection("SPECIALTY").insert(newSpecialty);
             await BaseDatabase.connection("TEACHER_SPECIALTY").insert(
@@ -55,6 +79,7 @@ export class TeacherDataBase extends BaseDatabase {
             );
           }
         }
+<<<<<<< HEAD
         let newSpecialty: any = {
           id: generateId(),
           name: specialty,
@@ -63,6 +88,16 @@ export class TeacherDataBase extends BaseDatabase {
           id: generateId(),
           teacher_id: teacher.getId(),
           specialty_id: newSpecialty.id,
+=======
+        newSpecialty = {
+          id: generateId(),
+          name: specialty,
+        };
+        newTeacherSpecialty = {
+          id: generateId(),
+          student_id: teacher.getId(),
+          hobby_id: newSpecialty.id,
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
         };
         await BaseDatabase.connection("SPECIALTY").insert(newSpecialty);
         await BaseDatabase.connection("TEACHER_SPECIALTY").insert(

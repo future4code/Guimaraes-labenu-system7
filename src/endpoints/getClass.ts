@@ -9,19 +9,17 @@ import { TeacherDataBase } from "../data/Databases/TeacherDataBase";
 
 export const getClass = async (req: Request, res: Response) => {
   try {
-    let newClass: any;
-    let arrayStudents: any = [];
-    let newStudent: any = [];
-
     const classDB = new ClassDataBase();
 
     const allClass = await classDB.getAllClass();
-
     if (!allClass) {
       throw new CustomError("NOT FOUND CLASS", 404);
     }
 
+<<<<<<< HEAD
    
+=======
+>>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
     res.status(200).send(allClass);
   } catch (error: any) {
 

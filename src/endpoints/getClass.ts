@@ -16,10 +16,7 @@ export const getClass = async (req: Request, res: Response) => {
       throw new CustomError("NOT FOUND CLASS", 404);
     }
 
-<<<<<<< HEAD
    
-=======
->>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
     res.status(200).send(allClass);
   } catch (error: any) {
 

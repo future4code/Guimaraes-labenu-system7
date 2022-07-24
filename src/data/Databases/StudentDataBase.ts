@@ -112,21 +112,12 @@ export class StudentDataBase extends BaseDatabase {
   public getStudentsList = async (classId: string): Promise<any[]> => {
     try {
       const result: any = await BaseDatabase.connection("STUDENTS as s ")
-<<<<<<< HEAD
       .select(
       "s.id",
       "s.name",
       "s.email",
       "s.birth_date as birthDate")
       .where("class_id", classId);
-=======
-        .select(
-        "s.id",
-        "s.name",
-        "s.email",
-        "s.birth_date as birthDate")
-        .where("class_id", classId);
->>>>>>> 8920edd51dfdd3850ad56818d54df88f6897dc83
       return result;
     } catch (error: any) {
       throw new CustomError(error.sqlMessage || error.message, 500);
